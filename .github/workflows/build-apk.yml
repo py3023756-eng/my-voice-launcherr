@@ -1,0 +1,25 @@
+name: Build Custom Launcher APK
+on: [push, workflow_dispatch]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - name: Generate Android Wrapper & Setup Launcher Permissions
+        run: |
+          flutter create --platforms=android --org com.custom.launcher .
+          sed -i 's/<\/activity>/<intent-filter><action android:name="android.intent.action.MAIN"\/><category android:name="android.intent.category.HOME"\/><category android:name="android.intent.category.DEFAULT"\/><\/intent-filter><\/activity>/g' android/app/src/main/AndroidManifest.xml
+          sed -i 's/<application/<uses-permission android:name="android.permission.RECORD_AUDIO"\/><uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM"\/><uses-permission android:name="android.permission.VIBRATE"\/><uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"\/><application/g' android/app/src/main/AndroidManifest.xml
+      - run: flutter pub get
+      - run: flutter build apk --release
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MyVoiceLauncher-APK
+          path: build/app/outputs/flutter-apk/app-release.apk
