@@ -1,0 +1,26 @@
+name: my_voice_launcher
+description: Custom iOS-style Dynamic Island Voice Launcher with 5-Min Self-Voice Alarm.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  speech_to_text: ^7.5.0
+  record: ^7.2.0
+  audioplayers: ^6.8.1
+  sensors_plus: ^6.1.0
+  shared_preferences: ^2.3.2
+  path_provider: ^2.1.4
+  permission_handler: ^11.3.1
+  intl: ^0.19.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
